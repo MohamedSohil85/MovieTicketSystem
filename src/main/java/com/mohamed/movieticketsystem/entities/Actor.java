@@ -13,10 +13,8 @@ public class Actor implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long actorId;
     @NotEmpty(message = "Name must not be Empty")
-    @Size(min = 2)
     private String actorName;
     @NotEmpty(message = "Country must not be empty")
-    @Size(min = 2)
     private String country;
     @ManyToOne
     private Movie movie;

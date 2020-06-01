@@ -15,21 +15,18 @@ public class MovieDetials implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long movieDetialsId;
     @NotEmpty(message = "insert Director's Name")
-    @Size(min = 2,max = 10)
     private String director;
     @NotEmpty(message = "insert Producer's Name")
-    @Size(min = 2,max = 10)
+
     private String producer;
     @NotEmpty(message = "insert RunnigTime")
     private String runnigTime;
     @NotEmpty(message = "insert Country")
-    @Size(min = 2,max = 10)
     private String country;
     @NotEmpty(message = "insert Language")
-    @Size(min = 2,max = 10)
     private String language;
 
-    @OneToOne
+    @OneToOne(mappedBy = "movieDetials",cascade = CascadeType.ALL)
     private Movie movie;
 
 

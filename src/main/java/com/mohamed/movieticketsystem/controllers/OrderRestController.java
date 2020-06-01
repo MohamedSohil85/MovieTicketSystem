@@ -25,9 +25,9 @@ public class OrderRestController {
     public List loadOrders() {
    return (List)orderRepository.findAll();
     }
-    @RequestMapping(value = "/Order",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createOrder(@Valid  @RequestParam("username")String username,@Valid @RequestParam("movieName")String movieName){
-        return orderRepository.findByUser_UserNameAndMovie_MovieName(username, movieName).map(order -> {
+    @RequestMapping(value = "/Order/{username}/{movieName}/createOrder",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createOrder(@Valid  @PathVariable("username")String username,@Valid @PathVariable("movieName")String movieName){
+        return orderRepository.findByUserNameAndMovie_MovieName(username, movieName).map(order -> {
             Date orderdate = new Date();
            order.setCreateOrders(orderdate);
             return new ResponseEntity<>(orderRepository.save(order), HttpStatus.CREATED);

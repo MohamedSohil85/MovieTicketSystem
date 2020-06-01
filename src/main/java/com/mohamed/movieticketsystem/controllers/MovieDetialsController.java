@@ -3,7 +3,6 @@ package com.mohamed.movieticketsystem.controllers;
 import com.mohamed.movieticketsystem.entities.MovieDetials;
 import com.mohamed.movieticketsystem.repositories.MovieDetailsRepository;
 import com.mohamed.movieticketsystem.repositories.MovieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +13,21 @@ import javax.validation.Valid;
 @RestController
 public class MovieDetialsController {
     final MovieDetailsRepository movieDetailsRepository;
-    MovieRepository movieRepository;
+        final     MovieRepository movieRepository;
 
-    public MovieDetialsController(MovieDetailsRepository movieDetailsRepository) {
+    public MovieDetialsController(MovieDetailsRepository movieDetailsRepository, MovieRepository movieRepository) {
         this.movieDetailsRepository = movieDetailsRepository;
+        this.movieRepository = movieRepository;
     }
+
 
     @RequestMapping(value = "/saveMovieDetailsToMovie/{id}",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveMoviedetials(@Valid @RequestBody MovieDetials movieDetials, @Valid @PathVariable("id")Long id){
         return movieRepository.findById(id).map(movie -> {
-
+           movie.setMovieDetials(movieDetials);
             movieDetials.setMovie(movie);
             return new ResponseEntity(movieDetailsRepository.save(movieDetials), HttpStatus.CREATED);
         }).orElse(new ResponseEntity(HttpStatus.NOT_FOUND));
     }
+
 }

@@ -1,5 +1,7 @@
 package com.mohamed.movieticketsystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -19,26 +21,21 @@ public class Movie implements Serializable {
     private Long movieId;
     @NotEmpty(message = "Enter Movie'Name")
     private String movieName;
-    @Temporal(value = TemporalType.DATE)
-    @DateTimeFormat(pattern = "DD.MM.YYYY HH:MM:SS")
-    @NotEmpty(message = "Enter Date of Release")
+    @JsonFormat(pattern = "yyyy-MM-dd" ,timezone = "Europe/Berlin")
+    @Temporal(TemporalType.DATE)
     private Date releaseDate;
-    @Enumerated(value = EnumType.STRING)
-    @NotEmpty(message = "Enter the Genre of the Movie")
     private Genre genre;
-    @NotEmpty(message = "Enter the Number of Movie")
-    @Size(min = 1)
     private int noOfTickets;
-    @NotEmpty(message = "Enter the Price")
     private double price;
-    @NotEmpty(message = "Enter the Rating")
-    @Size(min = 1,max = 10)
     private int rating;
     @OneToOne
+    @JsonIgnore
     private MovieDetials movieDetials;
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Actor> starring;
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Orders>Orderss;
     public Movie() {
     }
