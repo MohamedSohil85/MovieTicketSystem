@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-public class MovieDetialsController {
+public class MovieDetailsController {
     final MovieDetailsRepository movieDetailsRepository;
-        final     MovieRepository movieRepository;
+        final MovieRepository movieRepository;
 
-    public MovieDetialsController(MovieDetailsRepository movieDetailsRepository, MovieRepository movieRepository) {
+    public MovieDetailsController(MovieDetailsRepository movieDetailsRepository, MovieRepository movieRepository) {
         this.movieDetailsRepository = movieDetailsRepository;
         this.movieRepository = movieRepository;
     }
