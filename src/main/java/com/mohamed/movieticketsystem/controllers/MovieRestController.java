@@ -123,7 +123,6 @@ public class MovieRestController {
             movie.setGenre(newMovie.getGenre());
             movie.setMovieName(newMovie.getMovieName());
             movie.setPrice(newMovie.getPrice());
-            movie.setNoOfTickets(newMovie.getNoOfTickets());
             movie.setRating(newMovie.getRating());
             return new ResponseEntity(movieRepository.save(movie),HttpStatus.OK);
         }).orElse(new ResponseEntity(HttpStatus.NOT_FOUND));

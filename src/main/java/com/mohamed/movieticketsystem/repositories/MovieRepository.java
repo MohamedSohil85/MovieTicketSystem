@@ -14,4 +14,6 @@ public interface MovieRepository extends CrudRepository<Movie,Long> {
     List<Movie>findMoviesByReleaseDate(Date releasedate);
     List<Movie>findMoviesByStarring(String actorName);
     List<Movie>findMoviesByMovieDetials_Country(String country);
+    Optional<Movie>getMovieByMovieName(String name);
+
 }
