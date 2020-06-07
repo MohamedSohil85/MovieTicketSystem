@@ -24,6 +24,7 @@ public class Movie implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd" ,timezone = "Europe/Berlin")
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
+    @Enumerated(EnumType.STRING)
     private Genre genre;
     private double price;
     @ManyToOne
