@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,13 +13,15 @@ public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long OrdersId;
-
+    private int quantity;
+    @JsonFormat(pattern = "yyyy-MM-dd" ,timezone = "Europe/Berlin")
+    @Temporal(value = TemporalType.DATE)
+    private Date createOrders;
+    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
+    private List<Movie>movieList;
     @ManyToOne
     private RegistretedUser user;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:MM:SS" ,timezone = "Europe/Berlin")
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date createOrders;
     public Orders() {
     }
 
@@ -38,8 +41,6 @@ public class Orders implements Serializable {
         this.OrdersId = OrdersId;
     }
 
-
-
     public RegistretedUser getUser() {
         return user;
     }
@@ -48,30 +49,46 @@ public class Orders implements Serializable {
         this.user = user;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public List<Movie> getMovieList() {
+        return movieList;
+    }
+
+    public void setMovieList(List<Movie> movieList) {
+        this.movieList = movieList;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Orders)) return false;
-        Orders Orders = (Orders) o;
-        return
-                Objects.equals(getOrdersId(), Orders.getOrdersId()) &&
-                Objects.equals(getUser(), Orders.getUser()) &&
-                Objects.equals(getCreateOrders(), Orders.getCreateOrders());
+        Orders orders = (Orders) o;
+        return getQuantity() == orders.getQuantity() &&
+                Objects.equals(getOrdersId(), orders.getOrdersId()) &&
+
+                Objects.equals(getCreateOrders(), orders.getCreateOrders());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOrdersId(),  getUser(), getCreateOrders());
+        return Objects.hash(getOrdersId(),  getQuantity(), getCreateOrders());
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Orders{");
         sb.append("OrdersId=").append(OrdersId);
-
-        sb.append(", user=").append(user);
+        sb.append(", quantity=").append(quantity);
         sb.append(", createOrders=").append(createOrders);
+        sb.append(", movieList=").append(movieList);
+
         sb.append('}');
         return sb.toString();
     }

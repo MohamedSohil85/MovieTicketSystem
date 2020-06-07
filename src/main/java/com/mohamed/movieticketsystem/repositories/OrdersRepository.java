@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface OrdersRepository extends CrudRepository<Orders,Long> {
-Optional<Orders>findByUserName(String username);
+
     
 }

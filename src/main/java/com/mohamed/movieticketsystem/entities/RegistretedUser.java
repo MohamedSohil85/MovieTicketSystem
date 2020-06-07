@@ -1,5 +1,7 @@
 package com.mohamed.movieticketsystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -20,23 +22,22 @@ public class RegistretedUser implements Serializable {
     @NotEmpty(message = "Enter your Age")
     private int age;
     @NotEmpty(message = "Enter the Password")
+    @JsonIgnore
     private String password;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<Orders>OrdersList;
+    @OneToMany
+   private List<Orders>ordersList;
+    @OneToMany
+    private List<Role>roleList;
 //
-
-
-
-
     public RegistretedUser() {
     }
 
-    public List<Orders> getOrdersList() {
-        return OrdersList;
+    public List<Role> getRoleList() {
+        return roleList;
     }
 
-    public void setOrdersList(List<Orders> OrdersList) {
-        this.OrdersList = OrdersList;
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     public Long getUserId() {
@@ -87,6 +88,14 @@ public class RegistretedUser implements Serializable {
         this.password = password;
     }
 
+    public List<Orders> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,6 +123,7 @@ public class RegistretedUser implements Serializable {
         sb.append(", Address='").append(Address).append('\'');
         sb.append(", age=").append(age);
         sb.append(", password='").append(password).append('\'');
+
         sb.append('}');
         return sb.toString();
     }

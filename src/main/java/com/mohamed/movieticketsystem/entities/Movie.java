@@ -26,11 +26,13 @@ public class Movie implements Serializable {
     private Date releaseDate;
     private Genre genre;
     private double price;
+    @ManyToOne
+    private Orders orders;
     private int rating;
     @OneToOne
     @JsonIgnore
     private MovieDetials movieDetials;
-    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Actor> starring;
 
@@ -45,7 +47,13 @@ public class Movie implements Serializable {
         this.rating = rating;
     }
 
+    public Orders getOrders() {
+        return orders;
+    }
 
+    public void setOrders(Orders orders) {
+        this.orders = orders;
+    }
 
     public double getPrice() {
         return price;
@@ -109,20 +117,20 @@ public class Movie implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Movie)) return false;
         Movie movie = (Movie) o;
-        return
-                Double.compare(movie.getPrice(), getPrice()) == 0 &&
+        return Double.compare(movie.getPrice(), getPrice()) == 0 &&
                 getRating() == movie.getRating() &&
                 Objects.equals(getMovieId(), movie.getMovieId()) &&
                 Objects.equals(getMovieName(), movie.getMovieName()) &&
                 Objects.equals(getReleaseDate(), movie.getReleaseDate()) &&
                 getGenre() == movie.getGenre() &&
+                Objects.equals(getOrders(), movie.getOrders()) &&
                 Objects.equals(getMovieDetials(), movie.getMovieDetials()) &&
                 Objects.equals(getStarring(), movie.getStarring());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMovieId(), getMovieName(), getReleaseDate(), getGenre(),  getPrice(), getRating(), getMovieDetials(), getStarring());
+        return Objects.hash(getMovieId(), getMovieName(), getReleaseDate(), getGenre(), getPrice(), getOrders(), getRating(), getMovieDetials(), getStarring());
     }
 
     @Override
@@ -132,8 +140,8 @@ public class Movie implements Serializable {
         sb.append(", movieName='").append(movieName).append('\'');
         sb.append(", releaseDate=").append(releaseDate);
         sb.append(", genre=").append(genre);
-
         sb.append(", price=").append(price);
+        sb.append(", orders=").append(orders);
         sb.append(", rating=").append(rating);
         sb.append(", movieDetials=").append(movieDetials);
         sb.append(", starring=").append(starring);
