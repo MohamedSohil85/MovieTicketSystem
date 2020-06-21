@@ -27,8 +27,8 @@ public class Movie implements Serializable {
     @Enumerated(EnumType.STRING)
     private Genre genre;
     private double price;
-    @ManyToOne
-    private Orders orders;
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    private List<Orders>orders;
     private int rating;
     @OneToOne
     @JsonIgnore
@@ -48,13 +48,7 @@ public class Movie implements Serializable {
         this.rating = rating;
     }
 
-    public Orders getOrders() {
-        return orders;
-    }
 
-    public void setOrders(Orders orders) {
-        this.orders = orders;
-    }
 
     public double getPrice() {
         return price;
@@ -124,14 +118,14 @@ public class Movie implements Serializable {
                 Objects.equals(getMovieName(), movie.getMovieName()) &&
                 Objects.equals(getReleaseDate(), movie.getReleaseDate()) &&
                 getGenre() == movie.getGenre() &&
-                Objects.equals(getOrders(), movie.getOrders()) &&
+
                 Objects.equals(getMovieDetials(), movie.getMovieDetials()) &&
                 Objects.equals(getStarring(), movie.getStarring());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMovieId(), getMovieName(), getReleaseDate(), getGenre(), getPrice(), getOrders(), getRating(), getMovieDetials(), getStarring());
+        return Objects.hash(getMovieId(), getMovieName(), getReleaseDate(), getGenre(), getPrice(),  getRating(), getMovieDetials(), getStarring());
     }
 
     @Override
@@ -142,7 +136,7 @@ public class Movie implements Serializable {
         sb.append(", releaseDate=").append(releaseDate);
         sb.append(", genre=").append(genre);
         sb.append(", price=").append(price);
-        sb.append(", orders=").append(orders);
+
         sb.append(", rating=").append(rating);
         sb.append(", movieDetials=").append(movieDetials);
         sb.append(", starring=").append(starring);

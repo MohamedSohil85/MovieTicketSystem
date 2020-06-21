@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -107,7 +109,9 @@ public class MovieRestController {
         if (movies.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(movieRepository.findMoviesByStarring(name), HttpStatus.FOUND);
+       List result= movies.stream().filter(movie -> movie.getStarring().equals(name)).collect(Collectors.toList());
+
+        return new ResponseEntity(result, HttpStatus.FOUND);
     }
     @RequestMapping(value="/deleteMovieById/{id}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.DELETE)
     ResponseEntity deleteMovieById(@PathVariable("id")Long id) throws ResourcesException{
@@ -126,5 +130,14 @@ public class MovieRestController {
             movie.setRating(newMovie.getRating());
             return new ResponseEntity(movieRepository.save(movie),HttpStatus.OK);
         }).orElse(new ResponseEntity(HttpStatus.NOT_FOUND));
+    }
+    @RequestMapping(value = "/getMoviesByreleaseDate/{releaseDate}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
+    ResponseEntity getMoviesByDate( @PathVariable("releaseDate")String releaseDate){
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        String date = simpleDateFormat.format(releaseDate);
+
+        return new ResponseEntity(movieRepository.findMoviesByReleaseDate(date),HttpStatus.FOUND);
     }
 }

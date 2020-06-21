@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -19,14 +20,16 @@ public class RegistretedUser implements Serializable {
     private String userName;
     @NotEmpty(message = "Enter the Address")
     private String Address;
-    @NotEmpty(message = "Enter your Age")
+    @NotNull(message = "Enter your Age")
     private int age;
+
     @NotEmpty(message = "Enter the Password")
-    @JsonIgnore
     private String password;
     @OneToMany
+    @JsonIgnore
    private List<Orders>ordersList;
     @OneToMany
+    @JsonIgnore
     private List<Role>roleList;
 //
     public RegistretedUser() {

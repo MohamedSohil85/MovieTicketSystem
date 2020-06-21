@@ -17,11 +17,11 @@ public class Orders implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd" ,timezone = "Europe/Berlin")
     @Temporal(value = TemporalType.DATE)
     private Date createOrders;
-    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
-    private List<Movie>movieList;
+    private double totalPrice;
     @ManyToOne
     private RegistretedUser user;
-
+    @ManyToOne
+    private Movie movie;
     public Orders() {
     }
 
@@ -41,8 +41,24 @@ public class Orders implements Serializable {
         this.OrdersId = OrdersId;
     }
 
-    public RegistretedUser getUser() {
+    public  RegistretedUser getUser() {
         return user;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     public void setUser(RegistretedUser user) {
@@ -57,13 +73,6 @@ public class Orders implements Serializable {
         this.quantity = quantity;
     }
 
-    public List<Movie> getMovieList() {
-        return movieList;
-    }
-
-    public void setMovieList(List<Movie> movieList) {
-        this.movieList = movieList;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -72,13 +81,15 @@ public class Orders implements Serializable {
         Orders orders = (Orders) o;
         return getQuantity() == orders.getQuantity() &&
                 Objects.equals(getOrdersId(), orders.getOrdersId()) &&
+                Objects.equals(getCreateOrders(), orders.getCreateOrders()) &&
 
-                Objects.equals(getCreateOrders(), orders.getCreateOrders());
+                Objects.equals(getUser(), orders.getUser()) &&
+                Objects.equals(getMovie(), orders.getMovie());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOrdersId(),  getQuantity(), getCreateOrders());
+        return Objects.hash(getOrdersId(), getQuantity(), getCreateOrders(),  getUser(), getMovie());
     }
 
     @Override
@@ -87,8 +98,9 @@ public class Orders implements Serializable {
         sb.append("OrdersId=").append(OrdersId);
         sb.append(", quantity=").append(quantity);
         sb.append(", createOrders=").append(createOrders);
-        sb.append(", movieList=").append(movieList);
-
+        sb.append(", totalPrice=").append(totalPrice);
+        sb.append(", user=").append(user);
+        sb.append(", movie=").append(movie);
         sb.append('}');
         return sb.toString();
     }

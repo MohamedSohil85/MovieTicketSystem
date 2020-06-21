@@ -12,18 +12,22 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 @RestController
 public class OrderRestController {
     private final OrdersRepository orderRepository;
     private final MovieRepository movieRepository;
-    public OrderRestController(OrdersRepository orderRepository, MovieRepository movieRepository) {
+    private final UserRepository userRepository;
+    public OrderRestController(OrdersRepository orderRepository, MovieRepository movieRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
 
         this.movieRepository = movieRepository;
+        this.userRepository = userRepository;
     }
 
     @RequestMapping(value = "/Orders",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,21 +44,17 @@ public class OrderRestController {
         }
         orderRepository.deleteAll();
 }
-@RequestMapping(value = "/createOrderByMovieId/{id}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
-  ResponseEntity createOrder( @PathVariable("id")Long id, @RequestBody Orders orders){
+@RequestMapping(value = "/createOrderByMovieId/{movieId}/{userId}/Order",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
+  ResponseEntity createOrder( @PathVariable("movieId")Long id,@PathVariable("userId")Long userid, @RequestBody Orders orders){
         return movieRepository.findById(id).map(movie -> {
-
+            Optional<RegistretedUser>user=userRepository.findById(userid);
+            orders.setUser(user.get());
             orders.setCreateOrders(new Date());
-            movie.setOrders(orders);
+            orders.setMovie(movie);
+            orders.setTotalPrice(orders.getQuantity()*movie.getPrice());
             return new ResponseEntity(orderRepository.save(orders),HttpStatus.CREATED);
         }).orElse(new ResponseEntity(HttpStatus.NO_CONTENT));
 }
-    @RequestMapping(value = "/addOrderToUserById/{orderId}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
-    ResponseEntity addOrderToUser(@PathVariable("orderId")Long orderId, @RequestBody RegistretedUser user){
-        return orderRepository.findById(orderId).map(orders -> {
-            user.getOrdersList().add(orders);
-            orders.setUser(user);
-            return new ResponseEntity(orderRepository.save(orders),HttpStatus.CREATED);
-        }).orElse(new ResponseEntity(HttpStatus.NO_CONTENT));
-    }
+
+
 }
