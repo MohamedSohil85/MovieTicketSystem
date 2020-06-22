@@ -4,6 +4,7 @@ import com.mohamed.movieticketsystem.entities.Movie;
 import com.mohamed.movieticketsystem.exceptions.ResourcesException;
 import com.mohamed.movieticketsystem.repositories.ActorRepository;
 import com.mohamed.movieticketsystem.repositories.MovieRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -131,13 +132,10 @@ public class MovieRestController {
             return new ResponseEntity(movieRepository.save(movie),HttpStatus.OK);
         }).orElse(new ResponseEntity(HttpStatus.NOT_FOUND));
     }
-    @RequestMapping(value = "/getMoviesByreleaseDate/{releaseDate}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
-    ResponseEntity getMoviesByDate( @PathVariable("releaseDate")String releaseDate){
-        String pattern = "yyyy-MM-dd";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+    @RequestMapping(value = "/getMoviesByreleaseDate",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
+    ResponseEntity getMoviesByDate( @RequestParam("releaseDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  Date releaseDate){
 
-        String date = simpleDateFormat.format(releaseDate);
 
-        return new ResponseEntity(movieRepository.findMoviesByReleaseDate(date),HttpStatus.FOUND);
+        return new ResponseEntity(movieRepository.findMoviesByReleaseDate(releaseDate),HttpStatus.FOUND);
     }
 }

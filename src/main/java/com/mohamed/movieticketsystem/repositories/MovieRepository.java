@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface MovieRepository extends CrudRepository<Movie,Long> {
     Optional<Movie>findMovieByMovieName(String name);
-    List<Movie>findMoviesByReleaseDate(String releasedate);
+    List<Movie>findMoviesByReleaseDate(Date releasedate);
     List<Movie>getMoviesByStarringContaining(String actorName);
     List<Movie>findMoviesByMovieDetials_Country(String country);
     Optional<Movie>getMovieByMovieName(String name);
