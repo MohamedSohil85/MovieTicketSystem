@@ -31,6 +31,7 @@ public class RegistretedUser implements Serializable {
     @OneToMany
     @JsonIgnore
     private List<Role>roleList;
+
 //
     public RegistretedUser() {
     }
@@ -99,6 +100,7 @@ public class RegistretedUser implements Serializable {
         this.ordersList = ordersList;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -126,7 +128,6 @@ public class RegistretedUser implements Serializable {
         sb.append(", Address='").append(Address).append('\'');
         sb.append(", age=").append(age);
         sb.append(", password='").append(password).append('\'');
-
         sb.append('}');
         return sb.toString();
     }

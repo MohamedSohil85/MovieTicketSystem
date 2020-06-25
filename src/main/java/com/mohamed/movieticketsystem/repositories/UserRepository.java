@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<RegistretedUser,Long> {
      Optional<RegistretedUser>findRegistretedUserByName(String name);
     Optional<RegistretedUser>findRegistretedUserByUserNameAndPassword(String username,String password);
+    RegistretedUser findRegistretedUserByUserName(String username);
 }
