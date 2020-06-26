@@ -32,7 +32,7 @@ public class RegistretedUserController {
         this.roleRepository = roleRepository;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @RequestMapping(value = "/secure/getUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List getUsers() throws ResourcesException {
         List<RegistretedUser> users = (List) userRepository.findAll();
@@ -71,11 +71,11 @@ public class RegistretedUserController {
         }).orElse(new ResponseEntity(HttpStatus.NO_CONTENT));
     }
 
-    @RequestMapping(value = "/deleteById/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/secure/deleteById/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteUserName(@PathVariable("id") Long id) {
       userRepository.deleteById(id);
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @RequestMapping(value = "/secure/deleteByName/{name}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RegistretedUser> deleteUserByName(@Valid @PathVariable("name")String name)throws ResourcesException{
        return userRepository.findRegistretedUserByName(name).map(user -> {

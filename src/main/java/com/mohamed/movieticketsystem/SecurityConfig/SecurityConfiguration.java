@@ -39,17 +39,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http
-                .httpBasic()
+        http.authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/secure/**").hasAuthority("ADMIN")
+                .anyRequest().authenticated()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .formLogin().permitAll()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/secure/**").hasAnyRole("Role_ADMIN")
+                .logout().permitAll()
                 .and()
-                .formLogin()
-                .permitAll();
+                .exceptionHandling().accessDeniedPage("/403");
 
     }
 

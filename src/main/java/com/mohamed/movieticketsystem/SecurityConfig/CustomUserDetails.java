@@ -1,26 +1,34 @@
 package com.mohamed.movieticketsystem.SecurityConfig;
 
 import com.mohamed.movieticketsystem.entities.RegistretedUser;
+import com.mohamed.movieticketsystem.entities.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class CustomUserDetails implements UserDetails {
     private RegistretedUser user;
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user
-                .getRoleList()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority("Role_"+role))
-                .collect(Collectors.toList());
+       List<Role> roleList=user.getRoleList();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roleList) {
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+        }
+        return authorities;
     }
 
 
