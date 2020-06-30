@@ -1,0 +1,9 @@
+applications:
+- name: Online-Moviethek
+  path: target/Online-MovieThek.jar
+  domain: cfapps.io
+  buildpack:  https://github.com/cloudfoundry/java-buildpack
+  instances: 1
+  health-check-type: port
+services:
+- OnlineMovieDB-Service

@@ -32,7 +32,6 @@ public class RegistretedUserController {
         this.roleRepository = roleRepository;
     }
 
-
     @RequestMapping(value = "/secure/getUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List getUsers() throws ResourcesException {
         List<RegistretedUser> users = (List) userRepository.findAll();

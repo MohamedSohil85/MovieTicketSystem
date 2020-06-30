@@ -12,11 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 @RestController
 public class OrderRestController {
@@ -30,7 +28,7 @@ public class OrderRestController {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping(value = "/Orders",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/secure/Orders",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     public List loadOrders() {
    return (List)orderRepository.findAll();
     }
@@ -55,6 +53,17 @@ public class OrderRestController {
             return new ResponseEntity(orderRepository.save(orders),HttpStatus.CREATED);
         }).orElse(new ResponseEntity(HttpStatus.NO_CONTENT));
 }
+    @RequestMapping(value = "/makeOrderByUsernameAndPasswordAndMovieId",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
+    ResponseEntity makeOrders(@RequestParam("movieId")Long movieId,@RequestParam("username")String username,@RequestParam("password")String password,@RequestBody Orders orders) {
+        return movieRepository.findById(movieId).map(movie -> {
+           Optional<RegistretedUser> user= userRepository.findRegistretedUserByUserNameAndPassword(username, password);
+            orders.setUser(user.get());
+            orders.setTotalPrice(orders.getQuantity()*movie.getPrice());
+            orders.setCreateOrders(new Date());
+            orders.setMovie(movie);
+            return new ResponseEntity(orderRepository.save(orders),HttpStatus.CREATED);
+        }).orElse(new ResponseEntity(HttpStatus.NO_CONTENT));
+    }
 
 
 }

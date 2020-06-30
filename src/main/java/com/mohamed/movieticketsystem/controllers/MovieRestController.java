@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 public class MovieRestController {
-    final
-    MovieRepository movieRepository;
+    final MovieRepository movieRepository;
     final ActorRepository actorRepository;
 
     public MovieRestController(MovieRepository movieRepository, ActorRepository actorRepository) {
