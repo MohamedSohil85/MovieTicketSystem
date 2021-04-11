@@ -32,7 +32,7 @@ public class RegistretedUserController {
         this.roleRepository = roleRepository;
     }
 
-    @RequestMapping(value = "/secure/getUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List getUsers() throws ResourcesException {
         List<RegistretedUser> users = (List) userRepository.findAll();
         if (users.isEmpty()) {
@@ -40,7 +40,10 @@ public class RegistretedUserController {
         }
         return users;
     }
-
+    @RequestMapping(value = "/User/{userId}",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public RegistretedUser getUserById(@PathVariable("userId")Long id){
+        return userRepository.findById(id).orElse(null);
+    }
     @RequestMapping(value = "/saveNewUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveNewUser(@Valid @RequestBody RegistretedUser user) {
         PasswordValidation passwordValidation = new PasswordValidation();
