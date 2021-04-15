@@ -27,7 +27,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RegistretedUserRestControllerTest {
+class RegistretedUserRestControllerIT {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -70,6 +70,21 @@ class RegistretedUserRestControllerTest {
     }
 
     @Test
-    void saveNewUser() {
+    void saveNewUser() throws JSONException, JsonProcessingException {
+        RegistretedUser user2=new RegistretedUser();
+        user2.setName("Mohamed");
+        user2.setUserName("MohamedSohil85");
+        user2.setAddress("Darmstadt");
+        user2.setAge(32);
+        user2.setPassword("mM185%S4&7mS");
+        user2.setUserId(1L);
+
+
+        String expected=om.writeValueAsString(user2);
+        Mockito.when(userRepository.save(user)).thenReturn(user2);
+        ResponseEntity<String>responseEntity=restTemplate.postForEntity("/saveNewUser",user2,String.class);
+        Assertions.assertEquals(HttpStatus.CREATED,responseEntity.getStatusCode());
+
+
     }
 }
